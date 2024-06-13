@@ -5,25 +5,23 @@ import br.com.joao.customerspanel.exceptions.InvalidArgumentException;
 import br.com.joao.customerspanel.exceptions.ResourceNotFoundException;
 import br.com.joao.customerspanel.infra.auth.TokenService;
 import br.com.joao.customerspanel.repositories.CustomerRepository;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
     public CustomerService(CustomerRepository customerRepository,
                            PasswordEncoder passwordEncoder,
-                           AuthenticationManager authenticationManager,
                            TokenService tokenService) {
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
     }
 
@@ -53,6 +51,26 @@ public class CustomerService {
 
     public Customer findByEmail(String email) {
         return customerRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    public CustomerBaseInfoDTO findCustomerBaseInfo(String id) {
+        return customerRepository.findById(id).map(x -> new CustomerBaseInfoDTO(
+                x.getId(),
+                x.getFirstName(),
+                x.getLastName(),
+                x.getEmail(),
+                x.getAvatar())
+        ).orElseThrow(() -> new ResourceNotFoundException("User not found with ID " + id));
+    }
+
+    public List<CustomerBaseInfoDTO> findAll() {
+        return customerRepository.findAll().stream().map(x -> new CustomerBaseInfoDTO(
+                x.getId(),
+                x.getFirstName(),
+                x.getLastName(),
+                x.getEmail(),
+                x.getAvatar()
+        )).toList();
     }
 
 }
