@@ -34,7 +34,9 @@ public class Customer implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
-    private String avatar;
+
+    @Column(unique = true)
+    private String profileImageId;
 
     public Customer(RegisterRequestDTO registerRequestDTO) {
         BeanUtils.copyProperties(registerRequestDTO, this);

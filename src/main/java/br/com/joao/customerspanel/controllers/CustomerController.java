@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,6 +35,17 @@ public class CustomerController {
     public ResponseEntity<CustomerBaseInfoDTO> edit(
             @PathVariable String id, @RequestBody @Valid CustomerDTO customerDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(customerService.edit(id, customerDTO));
+    }
+
+    @PostMapping("/{id}/profile-image")
+    public ResponseEntity<CustomerBaseInfoDTO> uploadAvatar(@PathVariable String id, @RequestBody MultipartFile file) {
+        customerService.uploadAvatar(id, file);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/{id}/profile-image")
+    public ResponseEntity<byte[]> getAvatar(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(customerService.getAvatar(id));
     }
 
 }

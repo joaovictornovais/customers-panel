@@ -1,5 +1,6 @@
 package br.com.joao.customerspanel.infra.s3;
 
+import br.com.joao.customerspanel.exceptions.InvalidArgumentException;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -21,16 +22,21 @@ public class S3Service {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
+                .contentType("image/jpeg")
                 .build();
         s3Client.putObject(objectRequest, RequestBody.fromBytes(file));
     }
 
-    public byte[] getObject(String bucketName, String key) throws IOException {
+    public byte[] getObject(String bucketName, String key) {
         GetObjectRequest objectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
                 .build();
-        return s3Client.getObject(objectRequest).readAllBytes();
+        try {
+            return s3Client.getObject(objectRequest).readAllBytes();
+        } catch (IOException e) {
+            throw new InvalidArgumentException("Image not compatible");
+        }
     }
 
 }

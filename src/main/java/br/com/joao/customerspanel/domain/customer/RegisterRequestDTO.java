@@ -12,6 +12,6 @@ public record RegisterRequestDTO(
         @NotBlank(message = "Email should not be blank")
         String email,
         @NotBlank(message = "Password should not be blank")
-        String password,
-        String avatar) {
+        String password
+){
 }
