@@ -40,6 +40,10 @@ public class Customer implements UserDetails {
         BeanUtils.copyProperties(registerRequestDTO, this);
     }
 
+    public Customer(CustomerDTO customerDTO) {
+        BeanUtils.copyProperties(customerDTO, this);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),

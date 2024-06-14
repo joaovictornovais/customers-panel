@@ -8,9 +8,10 @@ public record RegisterRequestDTO(
         String firstName,
         @NotBlank(message = "Last Name should not be blank")
         String lastName,
-        @Email(message = "E-mail should be well formated. Example: your_email@example.com")
+        @Email(message = "E-mail should be well formatted. Example: your_email@example.com")
         @NotBlank(message = "Email should not be blank")
         String email,
         @NotBlank(message = "Password should not be blank")
-        String password) {
+        String password,
+        String avatar) {
 }
