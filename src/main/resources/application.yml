@@ -15,3 +15,6 @@ api:
 
 aws:
   region: sa-east-1
+  s3:
+    buckets:
+      customer: customers-panel
