@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: customer-panel
+  datasource:
+    url: jdbc:postgresql://localhost:5432/customer
+    username: postgres
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+api:
+  security:
+    secret: ${SECRET_KEY:secret}
+
+aws:
+  region: sa-east-1
